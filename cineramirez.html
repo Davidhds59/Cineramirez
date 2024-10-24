@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.8/plyr.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+   
+<style>
+body {
+  background-color: #000;
+  color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+}
+body .father {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(auto, 1fr);
+}
+body .father .img-container {
+  grid-column: 1/span 2;
+  text-align: center;
+}
+body .father .img-container img {
+  width: 220px;
+  height: 250px;
+  border-radius: 10px;
+}
+body .father .info {
+  grid-column: 1/span 2;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 8px;
+  border-radius: 8px;
+}
+body .father .info h2 {
+  font-size: 1rem;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 5px;
+  background-color: #131212;
+  border-radius: 5px;
+  color: #0bc1ce;
+}
+body .father .info .sub-info {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: scroll;
+}
+body .father .info .sub-info h4 {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.8rem;
+  margin: 5px;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+  background-color: rgba(12, 11, 11, 0.7);
+}
+body .father .info .sinopsis-container {
+  height: 80px;
+  overflow-y: scroll;
+  padding: 8px;
+  background-color: rgba(12, 11, 11, 0.7);
+}
+body .father .botones-opcion {
+  grid-column: 1/span 2;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: scroll;
+}
+body .father .botones-opcion .opcion-item {
+  padding: 5px;
+  text-align: center;
+  display: flex;
+}
+body .father .botones-opcion .opcion-item button {
+  background-color: #fff;
+  border: none;
+  padding: 5px;
+  border-radius: 5px;
+  margin-right: 5px;
+}
+body .father .botones-opcion .opcion-item button .fab {
+  font-size: 1.2rem;
+  color: #ce0e0e;
+  font-weight: 900;
+}
+body .father .botones-opcion .opcion-reproduccion.activo {
+  background-color: #ce0e0e;
+  color: #fff;
+}
+body .father .reproductores {
+  grid-column: 1/span 2;
+}
+body .father .reproductores .detalles-pelicula {
+  width: 100%;
+}
+@media screen and (min-width: 700px) {
+  body .father {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(auto, 1fr);
+  }
+  body .father .img-container {
+    grid-column: 1;
+    text-align: center;
+  }
+  body .father .img-container img {
+    width: 300px;
+    height: 350px;
+    border-radius: 10px;
+  }
+  body .father .info {
+    grid-column: 2;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  body .father .info h2 {
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 10px;
+    border-radius: 8px;
+  }
+  body .father .info .sub-info {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+  }
+  body .father .info .sub-info h4 {
+    display: flex;
+    flex-direction: column;
+    font-size: 1rem;
+    margin: 5px;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+  }
+  body .father .info .sinopsis-container {
+    height: 200px;
+    overflow-y: scroll;
+    padding: 8px;
+  }
+  body .father .botones-opcion {
+    grid-column: 1/span 2;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+    justify-content: center;
+  }
+  body .father .botones-opcion .opcion-item {
+    padding: 5px;
+    text-align: center;
+    display: flex;
+  }
+  body .father .botones-opcion .opcion-item button {
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    margin-right: 5px;
+  }
+  body .father .botones-opcion .opcion-item button .fab {
+    font-size: 1.4rem;
+    font-weight: 900;
+  }
+  body .father .reproductores {
+    grid-column: 1/span 2;
+  }
+  body .father .reproductores .detalles-pelicula {
+    width: 100%;
+  }
+}/*# sourceMappingURL=peliculas.css.map */
+</style>
+    <title>Películas</title>
+</head>
+<body>
+    <div class="father">
+        <div class="img-container">
+            <img src="" alt="">
+        </div>
+
+        <div class="info">
+            <h2>Titulo</h2>
+            <div class="sub-info">
+                <h4>Categoría</h4>
+                <h4>Fecha de lanzamiento</h4>
+                <h4>Duración</h4>
+                <h4>Calificación</h4>
+            </div>
+
+            <div class="sinopsis-container">
+                <p></p>
+            </div>
+        </div>
+
+        <div class="botones-opcion">
+        </div>
+
+         <div class="reproductores">
+           <div class="detalles-pelicula" id="detalles-pelicula">
+            <!-- Aquí se mostrarán los detalles de la película -->
+           </div>
+        
+        </div>
+    </div>
+
+    <script src="https://cdn.plyr.io/3.6.8/plyr.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Recuperar el ID de TMDB del almacenamiento local
+            const tmdbId = localStorage.getItem('tmdbId');
+            // Definir los controles del reproductor Plyr
+            const controls = [
+            'rewind',
+            'play',
+            'fast-forward', 
+            'progress',
+            'current-time',
+            'duration',
+            'mute',
+            'volume',
+            'captions',
+            'pip',
+            'airplay',
+            'fullscreen',
+            'restart',
+            'download'
+        ];
+        
+
+            // Verificar si se encontró un ID de TMDB en el almacenamiento local
+            if (tmdbId) {
+                // Ejemplo de solicitud a la API de TMDB para obtener información de la película
+                const apiKeyTMDB = 'cc5b94165972aa509a349161d13d4fc9';
+                const apiUrlTMDB = `https://api.themoviedb.org/3/movie/${tmdbId}?api_key=${apiKeyTMDB}&language=es`;
+
+                try {
+                    // Realizar la solicitud a la API de TMDB
+                    const responseTMDB = await fetch(apiUrlTMDB);
+                    if (responseTMDB.ok) {
+                        const dataTMDB = await responseTMDB.json();
+                        // Mostrar información básica de la película en la página
+                        mostrarInformacionBasica(dataTMDB);
+
+                        // Ejemplo de solicitud a la otra API para obtener información adicional de la película
+                        const token = 'mxlat';
+                        const nombreJSON = 'PELISMX';
+                        const apiUrlOtraAPI = `https://mediapanel.site/dashboard/api_info_movie.php?token=${token}&json=${nombreJSON}&tmdb_id=${tmdbId}`;
+                        const responseOtraAPI = await fetch(apiUrlOtraAPI);
+                        if (responseOtraAPI.ok) {
+                            const dataOtraAPI = await responseOtraAPI.json();
+                            // Mostrar información adicional de la película en la página
+                            mostrarInformacionAdicional(dataOtraAPI);
+                        } else {
+                            console.error('Error al obtener información adicional de la película:', responseOtraAPI.statusText);
+                        }
+                    } else {
+                        console.error('Error al obtener información básica de la película desde TMDB:', responseTMDB.statusText);
+                    }
+                } catch (error) {
+                    console.error('Error al obtener información de la película:', error);
+                }
+            } else {
+                console.error('No se encontró un ID de TMDB en el almacenamiento local.');
+            }
+        });
+
+        // Función para mostrar información básica de la película en la página
+        function mostrarInformacionBasica(pelicula) {
+            const peliculaInfoContainer = document.querySelector('.father');
+            const imgContainer = peliculaInfoContainer.querySelector('.img-container img');
+            const info = peliculaInfoContainer.querySelector('.info');
+            const sinopsisContainer = info.querySelector('.sinopsis-container p');
+
+            // Mostrar información básica de la película en los elementos correspondientes
+            imgContainer.src = `https://image.tmdb.org/t/p/w500${pelicula.poster_path}`;
+            info.querySelector('h2').innerHTML = `${pelicula.title} `;
+            info.querySelector('h4:nth-of-type(1)').innerHTML = `${pelicula.genres.map(genre => genre.name).join(', ')} <i class="fas fa-tags"></i>`;
+            info.querySelector('h4:nth-of-type(2)').innerHTML = `${pelicula.release_date} <i class="far fa-calendar-alt"></i>`;
+            info.querySelector('h4:nth-of-type(3)').innerHTML = `${pelicula.runtime} minutos <i class="far fa-clock"></i>`;
+            info.querySelector('h4:nth-of-type(4)').innerHTML = `${pelicula.vote_average}/10 <i class="fas fa-star"></i>`;
+            sinopsisContainer.innerHTML = `${pelicula.overview} `;
+            
+
+            // Establecer la imagen de fondo del cuerpo de la página
+            document.body.style.backgroundImage = `url(https://image.tmdb.org/t/p/original${pelicula.backdrop_path})`;
+        }
+
+
+        function mostrarInformacionAdicional(data) {
+            const botonesAccion = document.querySelector('.botones-opcion');
+        
+            // Limpiar el contenido actual del div de botones de acción
+            botonesAccion.innerHTML = '';
+        
+            // Crear y agregar los botones de opción
+            data.enlaces.forEach((enlace, index) => {
+                // Crear el contenedor de la opción
+                const opcionItem = document.createElement('div');
+                opcionItem.classList.add('opcion-item');
+        
+                // Crear el botón de opción
+                const button = document.createElement('button');
+                button.textContent = `VER PELICULA AHORA  🍿${index + 1}`;
+                button.classList.add('opcion-reproduccion');
+        
+                // Agregar el evento de clic para reproducir el video correspondiente
+                button.addEventListener('click', () => {
+                    reproducirVideo(enlace.opcion, enlace.tipo);
+                });
+        
+                // Agregar el botón al contenedor de la opción
+                opcionItem.appendChild(button);
+        
+                // Crear el botón de transmitir
+                const transmitButton = document.createElement('button');
+                transmitButton.classList.add('transmit-button');
+        
+                // Crear el icono de transmitir
+                const transmitIcon = document.createElement('i');
+                transmitIcon.classList.add('fab', 'fa-chromecast');
+                transmitIcon.style.marginRight = '5px'; // Espacio entre el icono y el texto
+        
+                // Agregar el icono al botón de transmitir
+                transmitButton.appendChild(transmitIcon);
+        
+                // Agregar el evento de clic para transmitir el enlace usando Web Video Caster
+                transmitButton.addEventListener('click', () => {
+                    transmitirEnlace(enlace.opcion);
+                });
+        
+                // Agregar el botón de transmitir al contenedor de la opción
+                opcionItem.appendChild(transmitButton);
+        
+                // Agregar la opción al div de botones de acción
+                botonesAccion.appendChild(opcionItem);
+        
+                // Agregar un salto de línea entre las opciones
+                botonesAccion.appendChild(document.createElement('br'));
+            });
+        }
+        
+        function transmitirEnlace(enlace) {
+            // Abrir la aplicación Web Video Caster con el enlace proporcionado
+            window.location.href = `wvc-x-callback://open?url=${encodeURIComponent(enlace)}`;
+        }
+        
+        
+        function reproducirVideo(opcion, tipo) {
+            // Eliminar la clase 'activo' de todos los botones de opciones de reproducción
+            const botonesReproduccion = document.querySelectorAll('.opcion-reproduccion');
+            botonesReproduccion.forEach(boton => {
+                boton.classList.remove('activo');
+            });
+        
+            // Agregar la clase 'activo' al botón seleccionado
+            event.target.classList.add('activo');
+        
+            if (tipo === 'embed') {
+                // Mostrar dentro de un iframe con el estilo y atributos necesarios
+                const contenedorReproductores = document.querySelector('.reproductores');
+                contenedorReproductores.innerHTML = `
+                    <div style="position:relative;padding-bottom:56%;padding-top:20px;height:0;">
+                        <iframe id="iframe" src="${opcion}" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" allowfullscreen controls="controls" style="position:absolute;top:0;left:0;width:100%;height:100%;" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-pointer-lock" seamless></iframe>
+                    </div>`;
+            } else if (tipo === 'mp4') {
+                // Mostrar en el reproductor de video MP4 usando Plyr
+                const player = document.createElement('video');
+                player.setAttribute('class', 'plyr');
+                player.classList.add('video-player');
+                player.setAttribute('controls', '');
+                const source = document.createElement('source');
+                source.setAttribute('src', opcion);
+                source.setAttribute('type', 'video/mp4');
+                player.appendChild(source);
+                const contenedorReproductores = document.querySelector('.reproductores');
+                // Limpiar el contenido actual del contenedor de reproductores
+                contenedorReproductores.innerHTML = '';
+                // Agregar el nuevo reproductor al contenedor de reproductores
+                contenedorReproductores.appendChild(player);
+                // Inicializar el reproductor usando Plyr
+                const plyrPlayer = new Plyr(player);
+            }
+        }
+        
+    </script>
+
+
+
+
+
+
+
+
+
+<script>
+    // URL del enlace que se abrirá en la ventana emergente
+    var enlace = "https://oversleepwilling.com/xhmzbdxeaj?key=e65fbdff00505f9f906962ffb53fd4fd";
+
+    // Contador de clics
+    var contadorClics = 0;
+
+    // Función para abrir la ventana emergente solo en el primer clic
+    function abrirVentanaEmergente() {
+      if (contadorClics === 0) {
+        window.open(enlace, "_blank", "width=500,height=500");
+        contadorClics++;
+      }
+    }
+
+    // Evento para detectar el clic en cualquier parte de la página
+    document.addEventListener("click", abrirVentanaEmergente);</script>
+</body>
+</html>

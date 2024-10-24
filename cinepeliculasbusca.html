@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/buscador.css">
+    <title>Buscador de Contenido</title> 
+    <style>
+    /* Estilos generales */
+    body {
+        background-color: #000;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #fff;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Estilos para la barra de filtros */
+    .filtros {
+        display: flex;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        justify-content: center;
+        z-index: 999;
+        background-color: #111111;
+        padding: 10px 0;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    .filtros input {
+        width: 70%;
+        padding: 8px;
+        border-radius: 8px;
+        background-color: #333;
+        color: #fff;
+        border: 1px solid #555;
+        margin-right: 10px;
+        font-size: 1rem;
+    }
+
+    .filtros select {
+        border: none;
+        border-radius: 5px;
+        padding: 8px;
+        background-color: #333;
+        color: #fff;
+        font-size: 1rem;
+    }
+
+    /* Estilos para los resultados */
+    .resultados {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 130px; /* Ajuste para dejar espacio bajo el menú */
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+    .resultado-item {
+        background-color: #1b1a1a;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        transition: transform 0.2s ease-in-out;
+        position: relative;
+    }
+
+    .resultado-item:hover {
+        transform: scale(1.05);
+    }
+
+    .resultado-item img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .resultado-item h3 {
+        margin: 0;
+        padding: 10px;
+        background-color: rgba(27, 26, 26, 0.8);
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+        border-radius: 0 0 8px 8px;
+    }
+
+    .resultado-item-info {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+        max-width: 600px;
+        height: auto;
+        max-height: 70%;
+        padding: 20px;
+        background-color: rgba(0, 0, 0, 0.9);
+        color: #fff;
+        overflow-y: auto;
+        z-index: 1000;
+        border-radius: 10px;
+    }
+
+    .resultado-item-info.active {
+        display: block;
+    }
+
+    .resultado-item-info .sinopsis {
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+    }
+
+    .resultado-item-info .ver-ahora {
+        padding: 8px;
+        border-radius: 5px;
+        border: none;
+        text-align: center;
+        cursor: pointer;
+        transition: 0.2s;
+        background-color: #292727;
+        color: #fff;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 10px;
+    }
+
+    .resultado-item-info .ver-ahora:hover {
+        background-color: #ff0202;
+    }
+
+    .resultado-item-info .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #fff;
+    }
+
+    /* Estilos para el overlay */
+    .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 999;
+    }
+
+    .overlay.active {
+        display: block;
+    }
+
+    /* Media queries para hacer responsive */
+        @media (max-width: 576px) {
+            .resultados {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .resultado-item img {
+                height: auto;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .resultados {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (min-width: 992px) {
+            .resultados {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .resultados {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+        @media (max-width: 576px) {
+    .resultados {
+        margin-top: 50px; /* Ajuste para dejar espacio bajo el menú en dispositivos pequeños */
+    }
+}
+@media (min-width: 1200px) {
+    .resultados {
+        margin-top: 80px; /* Ajuste para dejar espacio bajo el menú en pantallas grandes */
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="filtros">
+        <input type="text" id="buscador" placeholder="Buscar...">
+        <select id="filtro-categoria">
+            <option value="todos">Todos</option>
+            <option value="peliculas">Películas</option>
+            <option value="series">Series</option>
+            <option value="animes">Animes</option>
+        </select>
+    </div>
+
+    <div class="resultados" id="resultados">
+        <!-- Los resultados se generarán dinámicamente aquí -->
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <div class="resultado-item-info" id="info-container">
+        <span class="close-btn">×</span>
+        <h3 id="info-title"></h3>
+        <p class="sinopsis" id="info-sinopsis"></p>
+        <p class="categoria" id="info-categoria"></p>
+        <p class="etiqueta" id="info-etiqueta"></p>
+        <p class="tipo" id="info-tipo"></p>
+        <p class="fecha" id="info-fecha"></p>
+        <button class="ver-ahora" id="info-ver-ahora"><i class="fas fa-play"></i> Ver ahora</button>
+    </div>
+
+    <script>
+        const apiUrlMovies = 'https://mediapanel.site/dashboard/api_movie.php';
+        const apiUrlSeries = 'https://mediapanel.site/dashboard/api_series.php';
+        const apiUrlAnimes = 'https://mediapanel.site/dashboard/api_animes.php';
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = 'mxlat'; // Reemplaza 'TU_TOKEN' con el token del usuario
+            const nombreJSON = 'PELISMX';
+            const buscador = document.getElementById('buscador');
+            const filtroCategoria = document.getElementById('filtro-categoria');
+            const resultadosContainer = document.getElementById('resultados');
+            const overlay = document.getElementById('overlay');
+            const infoContainer = document.getElementById('info-container');
+            const infoTitle = document.getElementById('info-title');
+            const infoSinopsis = document.getElementById('info-sinopsis');
+            const infoCategoria = document.getElementById('info-categoria');
+            const infoEtiqueta = document.getElementById('info-etiqueta');
+            const infoTipo = document.getElementById('info-tipo');
+            const infoFecha = document.getElementById('info-fecha');
+            const infoVerAhora = document.getElementById('info-ver-ahora');
+
+            buscador.addEventListener('input', () => {
+                const consulta = buscador.value.toLowerCase();
+                const categoria = filtroCategoria.value;
+                buscarEnDatosAPI(token, nombreJSON, consulta, categoria, resultadosContainer);
+            });
+
+            filtroCategoria.addEventListener('change', () => {
+                const consulta = buscador.value.toLowerCase();
+                const categoria = filtroCategoria.value;
+                buscarEnDatosAPI(token, nombreJSON, consulta, categoria, resultadosContainer);
+            });
+
+            overlay.addEventListener('click', () => {
+                overlay.classList.remove('active');
+                infoContainer.classList.remove('active');
+            });
+
+            document.querySelector('.close-btn').addEventListener('click', (event) => {
+                event.stopPropagation();
+                overlay.classList.remove('active');
+                infoContainer.classList.remove('active');
+            });
+
+            infoVerAhora.addEventListener('click', (event) => {
+                event.stopPropagation();
+                const tipoContenido = infoTipo.textContent.trim();
+                const tmdbId = infoVerAhora.getAttribute('data-tmdb-id');
+                if (tipoContenido === 'Película') {
+                    window.location.href = 'go:peliculas';
+                } else if (tipoContenido === 'Serie') {
+                    window.location.href = 'go:series';
+                } else if (tipoContenido === 'Anime') {
+                    window.location.href = 'go:animes';
+                } else {
+                    console.error('Tipo de contenido desconocido:', tipoContenido);
+                }
+                localStorage.setItem('tmdbId', tmdbId);
+            });
+
+            buscarEnDatosAPI(token, nombreJSON, '', 'todos', resultadosContainer); // Mostrar todos los resultados al cargar la página
+        });
+        
+        async function buscarEnDatosAPI(token, nombreJSON, consulta, categoria, container) {
+            container.innerHTML = '';
+            const mostrados = new Set(); // Conjunto para rastrear los resultados mostrados
+        
+            try {
+                const [moviesData, seriesData, animesData] = await Promise.all([
+                    obtenerDatosAPI(apiUrlMovies, token, nombreJSON),
+                    obtenerDatosAPI(apiUrlSeries, token, nombreJSON),
+                    obtenerDatosAPI(apiUrlAnimes, token, nombreJSON)
+                ]);
+
+                const resultadosPeliculas = moviesData.movies ? filtrarResultados(consulta, categoria, 'peliculas', moviesData.movies) : [];
+                const resultadosSeries = seriesData.series ? filtrarResultados(consulta, categoria, 'series', seriesData.series) : [];
+                const resultadosAnimes = animesData.anime ? filtrarResultados(consulta, categoria, 'animes', animesData.anime) : [];
+
+                resultadosPeliculas.forEach(item => {
+                    item.tipo = 'Película';
+                });
+                resultadosSeries.forEach(item => {
+                    item.tipo = 'Serie';
+                });
+                resultadosAnimes.forEach(item => {
+                    item.tipo = 'Anime';
+                });
+
+                const resultados = resultadosPeliculas.concat(resultadosSeries, resultadosAnimes);
+                mostrarResultados(resultados, container, mostrados);
+            } catch (error) {
+                console.error('Error al buscar y mostrar resultados:', error);
+            }
+        }
+        
+        async function obtenerDatosAPI(url, token, nombreJSON) {
+            const response = await fetch(`${url}?token=${token}&json=${nombreJSON}`);
+            if (!response.ok) {
+                throw new Error(`Error al obtener datos de la API (${url}): ${response.statusText}`);
+            }
+            return response.json();
+        }
+        
+        function filtrarResultados(consulta, categoria, tipoCategoria, data) {
+            return data.filter(item => {
+                const tituloEnMinusculas = item.titulo.toLowerCase();
+                const sinopsisEnMinusculas = item.sinopsis.toLowerCase();
+                const categoriasEnMinusculas = item.categorias.join(' ').toLowerCase();
+                const coincideCategoria = categoria === 'todos' || categoria === tipoCategoria;
+
+                return coincideCategoria && (
+                    tituloEnMinusculas.includes(consulta) ||
+                    sinopsisEnMinusculas.includes(consulta) ||
+                    categoriasEnMinusculas.includes(consulta)
+                );
+            });
+        }
+        
+        function mostrarResultados(resultados, container, mostrados) {
+            resultados.forEach(item => {
+                if (!mostrados.has(item.id_tmdb)) {
+                    mostrados.add(item.id_tmdb);
+
+                    const categorias = item.categorias.slice(0, 3).join(', ');
+                    const etiquetas = procesarEtiquetas(item.etiquetas);
+                    const tipo = item.tipo;
+
+                    const itemContainer = document.createElement('div');
+                    itemContainer.classList.add('resultado-item');
+
+                    const clickableContainer = document.createElement('div');
+                    clickableContainer.classList.add('clickable-container');
+                    clickableContainer.innerHTML = `
+                        <img src="${item.url_imagen}" alt="${item.titulo}">
+                        <h3>${item.titulo}</h3>
+                    `;
+                    itemContainer.appendChild(clickableContainer);
+                    container.appendChild(itemContainer);
+
+                    clickableContainer.addEventListener('click', function(event) {
+                        event.stopPropagation();
+                        mostrarInformacion(item, categorias, etiquetas, tipo);
+                    });
+                }
+            });
+        }
+
+        function mostrarInformacion(item, categorias, etiquetas, tipo) {
+            const overlay = document.getElementById('overlay');
+            const infoContainer = document.getElementById('info-container');
+            const infoTitle = document.getElementById('info-title');
+            const infoSinopsis = document.getElementById('info-sinopsis');
+            const infoCategoria = document.getElementById('info-categoria');
+            const infoEtiqueta = document.getElementById('info-etiqueta');
+            const infoTipo = document.getElementById('info-tipo');
+            const infoFecha = document.getElementById('info-fecha');
+            const infoVerAhora = document.getElementById('info-ver-ahora');
+
+            infoTitle.textContent = item.titulo;
+            infoSinopsis.textContent = item.sinopsis;
+            infoCategoria.textContent = categorias;
+            infoEtiqueta.textContent = etiquetas;
+            infoTipo.textContent = tipo;
+            infoFecha.textContent = item.fecha_subida;
+            infoVerAhora.setAttribute('data-tmdb-id', item.id_tmdb);
+
+            overlay.classList.add('active');
+            infoContainer.classList.add('active');
+        }
+        
+        function procesarEtiquetas(etiquetas) {
+            return etiquetas.replace(/,\s*|\s+/g, '#').replace(/#+/g, '#');
+        }
+    </script>
+
+
+
+
+
+
+
+
+
+</body>
+</html>
